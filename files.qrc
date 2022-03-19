@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>calculate_white_24dp.svg</file>
+    <file>backspace_white_24dp.svg</file>
+  </qresource>
+</RCC>
