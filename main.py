@@ -8,7 +8,7 @@ from operator import add, sub, mul, truediv
 operations = {
     '+': add,
     '-': sub,
-    '×': mul,
+    '*': mul,
     '/': truediv
 }
 
@@ -33,11 +33,14 @@ class Calculator(QMainWindow):
         self.ui.btn_9.clicked.connect(lambda: self.add_digit('9'))
 
         self.ui.btn_clear.clicked.connect(self.clear_all)
-        self.ui.btn_ce.clicked.connect(self.clear_entry())
-
+        self.ui.btn_ce.clicked.connect(self.clear_entry)
         self.ui.btn_point.clicked.connect(self.add_point)
 
-        self.ui.btn_add.clicked.connect(self.add_temp)
+        self.ui.btn_result.clicked.connect(self.calculate)
+        self.ui.btn_add.clicked.connect(lambda: self.math_operation('+'))
+        self.ui.btn_minus.clicked.connect(lambda: self.math_operation('-'))
+        self.ui.btn_mul.clicked.connect(lambda: self.math_operation('*'))
+        self.ui.btn_div.clicked.connect(lambda: self.math_operation('/'))
 
     def add_digit(self, btn_text: str) -> None:
         if self.ui.le_entry.text() == '0':
@@ -47,7 +50,6 @@ class Calculator(QMainWindow):
 
     def sender(self):
         '''sender(self) -> PySide6.QtCore.QObject'''
-        print('add_digit')
         pass
 
     def clear_all(self) -> None:
@@ -66,12 +68,9 @@ class Calculator(QMainWindow):
         n = str(float(num))
         return n[:-2] if n[-2:] == '.0' else n
 
-    def add_temp(self):
-        btn = self.sender()
-        entry = self.remove_trailing_zeros(self.ui.le_entry.text())
-
-        if not self.ui.lbl_temp.text():
-            self.ui.lbl_temp.setText(entry + f' {btn.text()} ')
+    def add_temp(self, math_sign: str):
+        if not self.ui.lbl_temp.text() or self.get_math_sign() == '=':
+            self.ui.lbl_temp.setText(self.remove_trailing_zeros(self.ui.le_entry.text()) + f' {math_sign} ')
             self.ui.le_entry.setText('0')
 
     def get_entry_num(self) -> Union[int, float]:
@@ -97,6 +96,20 @@ class Calculator(QMainWindow):
             self.ui.lbl_temp.setText(temp + self.remove_trailing_zeros(entry) + ' =')
             self.ui.le_entry.setText(result)
             return result
+
+    def math_operation(self, math_sign: str):
+        temp = self.ui.lbl_temp.text()
+
+        if not temp:
+            self.add_temp(math_sign)
+        else:
+            if self.get_math_sign() != math_sign:
+                if self.get_math_sign() == '=':
+                    self.add_temp(math_sign)
+                else:
+                    self.ui.lbl_temp.setText(temp[:-2] + f'{math_sign} ')
+            else:
+                self.ui.lbl_temp.setText(self.calculate() + f' {math_sign}')
 
 
 if __name__ == '__main__':

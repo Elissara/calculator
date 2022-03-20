@@ -493,11 +493,10 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Calculator", None))
-        self.lbl_temp.setText(QCoreApplication.translate("MainWindow", u"123.0+45.87=", None))
         self.le_entry.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.btn_ce.setText(QCoreApplication.translate("MainWindow", u"CE", None))
 #if QT_CONFIG(shortcut)
-        self.btn_ce.setShortcut(QCoreApplication.translate("MainWindow", u"Backspace", None))
+        self.btn_ce.setShortcut(QCoreApplication.translate("MainWindow", u"Del", None))
 #endif // QT_CONFIG(shortcut)
         self.btn_clear.setText(QCoreApplication.translate("MainWindow", u"C", None))
 #if QT_CONFIG(shortcut)
